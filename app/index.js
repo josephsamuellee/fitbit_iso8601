@@ -2,6 +2,11 @@ import clock from "clock";
 import * as document from "document";
 import { preferences } from "user-settings";
 import * as util from "../common/utils";
+//for steps
+import { me as appbit } from "appbit";
+import { today } from "user-activity";
+//battery
+import { battery } from "power";
 
 // Update the clock every minute
 clock.granularity = "minutes";
@@ -9,6 +14,7 @@ clock.granularity = "minutes";
 // Get a handle on the <text> element
 const myTime = document.getElementById("myTime");
 const myDate = document.getElementById("myDate");
+const mySteps = document.getElementById("mySteps");
 const myDebug = document.getElementById("myDebug");
 
 //function to generate week num
@@ -42,6 +48,10 @@ function current_week_num() {
 //set current week num on buildtime (so we don't have to wait until night)
 let buildtime_weeknum = current_week_num();
 
+function updateSteps() {
+  mySteps.text = today.adjusted.steps;
+}
+
 // Update the <text> element every tick with the current time
 clock.ontick = (evt) => {
   let today = evt.date;
@@ -60,12 +70,12 @@ clock.ontick = (evt) => {
   //myTime.text = `${hours}:${mins}`;
   
   //update week num on mondays 0100, where getday returns 0=sun through 6=sat
-  if ((today.getDay() === 1) && (today.getHours() === 0) {
-    // re-write week numbers on mondays at 
+  if ((today.getDay() === 1) && (today.getHours() === 0)) {
     let buildtime_weeknum = current_week_num();
     //let buildtime_weeknum = util.zeroPad(buildtime_weeknum)
   }
   myTime.text = `${hours}:${mins}`;
   myDate.text = "W"+buildtime_weeknum+" "+util.zeroPad(today.getMonth()+1)+"."+util.zeroPad(today.getDate());
-  myDebug.text = today.getDay();
+  myDebug.text = battery.chargeLevel + "%";
+  updateSteps();
 }

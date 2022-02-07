@@ -16,6 +16,13 @@
   text-anchor: start;
   fill: white;
 }
+#mySteps {
+  font-size: 60;
+  font-family: System-Bold;
+  text-length: 32;
+  text-anchor: start;
+  fill: white;
+}
 #myDebug {
   font-size: 60;
   font-family: System-Bold;
