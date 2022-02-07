@@ -1,0 +1,8 @@
+<svg class="background">
+  <text   x="10%" y="90%" id="myTime" />
+  <text   x="10%" y="70%" id="myDate" />
+  <text   x="10%" y="10%+30" id="myDebug" />
+  <!--
+      y@10% with 60px text height... too high, gets cut off
+  -->
+</svg>
