@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@fitbit/sdk": "~6.0.0"
+    "@fitbit/sdk": "~6.1.0"
   },
   "fitbit": {
     "appUUID": "6187eeb5-18d9-4fc1-b577-b03e45d5c93e",
@@ -9,11 +9,13 @@
     "iconFile": "resources/icon.png",
     "wipeColor": "",
     "requestedPermissions": [
-      "access_activity"
+      "access_activity",
+      "access_heart_rate",
+      "access_user_profile",
+      "run_background"
     ],
     "buildTargets": [
-      "atlas",
-      "vulcan"
+      "atlas"
     ],
     "i18n": {
       "en-US": {

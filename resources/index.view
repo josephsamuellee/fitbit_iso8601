@@ -2,7 +2,12 @@
   <text   x="10%" y="90%" id="myTime" />
   <text   x="10%" y="90%-60" id="myDate" />
   
+  <!--
   <text   x="10%" y="10%+80" id="mySteps" />
+-->
+  <text   x="10%" y="10%+160" id="myMMDD" />
+  
+  <text   x="10%" y="10%+80" id="myWeekNum" />
   <text   x="10%" y="10%+30" id="myDebug" />
   <!--
     y@10% with 60px text height... too high, gets cut off
