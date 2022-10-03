@@ -5,3 +5,5 @@ new watch place
 
 
 never used the step count, so switching to multiple algorithm evaluation. New algorithm (see image line two) has more power efficient algorithm. However, requires annual update of date tables (not hard, all done through excel)
+
+03 oct 2022 there's a bug in when the screen updates. it is 2022-w40, but both new and old algo not yet refreshed
