@@ -1,12 +1,24 @@
-import clock from "clock";
+  import clock from "clock";
 import * as document from "document";
 import { preferences } from "user-settings";
 import * as util from "../common/utils";
 //for steps
-import { me as appbit } from "appbit";
+import { me as appbit } from "appbit"; //so that we can get user sleep information
+if (!appbit.permissions.granted("access_sleep")) {
+   console.log("We're not allowed to read a users' sleep!");
+}
+import sleep from "sleep";
+if (sleep) {
+    sleep.addEventListener("change", () => {
+       console.log(`User sleep state is: ${sleep.state}`);
+     });
+  } else {
+     console.warn("Sleep API not supported on this device, or no permission")
+  }
+
 import { today } from "user-activity";
 //battery
-import { battery } from "power";
+import {charger, battery } from "power";
 
 import { me as device } from "device"; //console
 
@@ -21,6 +33,7 @@ const myDebug = document.getElementById("myDebug");
 const myWeekNum = document.getElementById("myWeekNum");
 const myMMDD = document.getElementById("myMMDD");
 
+  /* removing old power hungry method
 //function to generate week num
 function current_week_num() {
   // from https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php
@@ -49,8 +62,9 @@ function current_week_num() {
   //var week_num = new int;
   return util.zeroPad(1 + Math.ceil((n1stThursday - v_date) / 604800000));
   }
+  */
 //set current week num on buildtime (so we don't have to wait until night)
-let buildtime_weeknum = current_week_num();
+//let buildtime_weeknum = current_week_num();
 let test_date = new Date();
 const weeknumArr = [
   [0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5],
@@ -79,9 +93,14 @@ function updateSteps() {
 */ 
 
 // Update the <text> element every tick with the current time
+//
+let v_today = new Date();
+let hours = v_today.getHours();
+let mins = util.zeroPad(v_today.getMinutes());
+
 clock.ontick = (evt) => {
-  let today = evt.date;
-  let hours = today.getHours();
+  let v_today = evt.date;
+  let hours = v_today.getHours();
   
   
   
@@ -92,20 +111,41 @@ clock.ontick = (evt) => {
     // 24h format
     hours = util.zeroPad(hours);
   }
-  let mins = util.zeroPad(today.getMinutes());
+  let mins = util.zeroPad(v_today.getMinutes());
   //myTime.text = `${hours}:${mins}`;
   
+    /* w40-1 removing this update method, shifting to sleep wakeup (so 7 times a week)
   //update week num on mondays 0100, where getday returns 0=sun through 6=sat
-  //if ((today.getDay() === 1) && (today.getHours() === 0)) {
   if ((today.getDay() === 1) && (today.getHours() < 3) && (today.getMinutes()===1)) { //update this three times (because we saw bugs in when this is run)
-    let buildtime_weeknum = current_week_num();
+    //  let buildtime_weeknum = current_week_num();
     buildtime_weeknum_alt = weeknumArr[today.getMonth()][today.getDate()-1];
   }
+  */
   myTime.text = `${hours}:${mins}`;
-  myMMDD.text = "mm"+util.zeroPad(today.getMonth()+1)+"dd"+util.zeroPad(today.getDate());
-  myDate.text = "W"+buildtime_weeknum+" old";
-  myWeekNum.text = "2022-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+today.getDay(); //this is new w38-7
+  myMMDD.text = "mm"+util.zeroPad(v_today.getMonth()+1)+"dd"+util.zeroPad(v_today.getDate());
+    /* 2022-w40-1
+    myDate.text = "W"+buildtime_weeknum+" old";
+  */
   myDebug.text = battery.chargeLevel + "%";
   //myDebug.text = "hello"
   //updateSteps(); // removed as of w38-7
+};
+
+// w40-1 desire to see that this is updated in the morning
+sleep.onchange = (evt) => {
+      //buildtime_weeknum_alt = weeknumArr[today.getMonth()][today.getDate()-1];
+    update_week_num();  
+    myWeekNum.text = "2022-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+v_today.getDay();
+      myDate.text = `${hours}:${mins}`;
+     };
+
+// w40-1 this will cause an update to the week num (upon charging, or each battery change?)
+battery.onchange = (charger, evt) => {
+      update_week_num();
+      myWeekNum.text = "2022-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+v_today.getDay();
+      myDate.text = "charged";
+     }
+
+function update_week_num() {
+    buildtime_weeknum_alt = weeknumArr[v_today.getMonth()][v_today.getDate()-1];
 }
