@@ -11,10 +11,10 @@
 }
 #myDate {
   font-size: 60;
-  font-family: System-Bold;
+  font-family: System-Light;
   text-length: 32;
   text-anchor: start;
-  fill: white;
+  fill: cyan;
 }
 #mySteps {
   font-size: 60;
@@ -39,7 +39,7 @@
 }
 #myMMDD {
   font-size: 60;
-  font-family: System-Bold;
+  font-family: System-Light;
   text-length: 32;
   text-anchor: start;
   fill: white;

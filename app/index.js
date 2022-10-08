@@ -1,4 +1,4 @@
-  import clock from "clock";
+import clock from "clock";
 import * as document from "document";
 import { preferences } from "user-settings";
 import * as util from "../common/utils";
@@ -85,6 +85,7 @@ console.log("month="+test_date.getMonth()+
             "weeknum="+weeknumArr[test_date.getMonth()][test_date.getDate()-1]
            );
 let buildtime_weeknum_alt = weeknumArr[test_date.getMonth()][test_date.getDate()-1];
+// this is correct (sadly) to have index-1 offset due to how arrays are initialized in js
 
 /* removed as of w38-7
 function updateSteps() {
@@ -94,13 +95,18 @@ function updateSteps() {
 
 // Update the <text> element every tick with the current time
 //
-let v_today = new Date();
-let hours = v_today.getHours();
-let mins = util.zeroPad(v_today.getMinutes());
+let v_today ;
+let hours   ;
+let mins    ;
+let secs    ;
+//let v_today = new Date();
+//let hours = v_today.getHours();
+//let mins = util.zeroPad(v_today.getMinutes());
+//let secs = util.zeroPad(v_today.getSeconds());
 
 clock.ontick = (evt) => {
-  let v_today = evt.date;
-  let hours = v_today.getHours();
+  v_today = evt.date;
+  hours = v_today.getHours();
   
   
   
@@ -111,7 +117,7 @@ clock.ontick = (evt) => {
     // 24h format
     hours = util.zeroPad(hours);
   }
-  let mins = util.zeroPad(v_today.getMinutes());
+  mins = util.zeroPad(v_today.getMinutes());
   //myTime.text = `${hours}:${mins}`;
   
     /* w40-1 removing this update method, shifting to sleep wakeup (so 7 times a week)
@@ -122,11 +128,11 @@ clock.ontick = (evt) => {
   }
   */
   myTime.text = `${hours}:${mins}`;
-  myMMDD.text = "mm"+util.zeroPad(v_today.getMonth()+1)+"dd"+util.zeroPad(v_today.getDate());
+  myMMDD.text = util.zeroPad(v_today.getMonth()+1)+"/"+util.zeroPad(v_today.getDate());
     /* 2022-w40-1
     myDate.text = "W"+buildtime_weeknum+" old";
   */
-  myDebug.text = battery.chargeLevel + "%";
+  myDebug.text = battery.chargeLevel + "% batt";
   //myDebug.text = "hello"
   //updateSteps(); // removed as of w38-7
 };
@@ -135,17 +141,23 @@ clock.ontick = (evt) => {
 sleep.onchange = (evt) => {
       //buildtime_weeknum_alt = weeknumArr[today.getMonth()][today.getDate()-1];
     update_week_num();  
-    myWeekNum.text = "2022-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+v_today.getDay();
-      myDate.text = `${hours}:${mins}`;
+      myDate.text = `${hours}:${mins}:${secs}`;
      };
 
 // w40-1 this will cause an update to the week num (upon charging, or each battery change?)
-battery.onchange = (charger, evt) => {
+charger.onchange = (charger, evt) => {
       update_week_num();
-      myWeekNum.text = "2022-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+v_today.getDay();
-      myDate.text = "charged";
+    // we want to know when battery charger is updated
+      myDate.text = v_today.getDate()+`-${hours}:${mins}`; 
      }
 
 function update_week_num() {
+    v_today = new Date();
+    hours = v_today.getHours();
+    mins = util.zeroPad(v_today.getMinutes());
+    secs = util.zeroPad(v_today.getSeconds());
+
+    //
     buildtime_weeknum_alt = weeknumArr[v_today.getMonth()][v_today.getDate()-1];
+    myWeekNum.text = "2022-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+v_today.getDay();
 }
