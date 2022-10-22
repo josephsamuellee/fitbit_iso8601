@@ -27,9 +27,9 @@ clock.granularity = "minutes";
 
 // Get a handle on the <text> element
 const myTime = document.getElementById("myTime");
-const myDate = document.getElementById("myDate");
+const last_updated_string = document.getElementById("last_updated_string");
 const mySteps = document.getElementById("mySteps");
-const myDebug = document.getElementById("myDebug");
+const battery_status = document.getElementById("battery_status");
 const myWeekNum = document.getElementById("myWeekNum");
 const myMMDD = document.getElementById("myMMDD");
 
@@ -107,7 +107,7 @@ function updateSteps() {
 let tap_to_update = document.getElementById("tap_to_update");
 tap_to_update.addEventListener("mousemove", (evt) => {
    update_week_num();
-   myDate.text = `${sleep_holder_string} ${tap_counter}`;
+   last_updated_string.text = `${sleep_holder_string} ${tap_counter}`;
    tap_counter = tap_counter + 1;
 });
 
@@ -150,10 +150,10 @@ clock.ontick = (evt) => {
   myTime.text = `${hours}:${mins}`;
   myMMDD.text = util.zeroPad(v_today.getMonth()+1)+"/"+util.zeroPad(v_today.getDate());
     /* 2022-w40-1
-    myDate.text = "W"+buildtime_weeknum+" old";
+    last_updated_string.text = "W"+buildtime_weeknum+" old";
   */
-  myDebug.text = battery.chargeLevel + "% batt";
-  //myDebug.text = "hello"
+  battery_status.text = battery.chargeLevel + "% batt";
+  //battery_status.text = "hello"
   //updateSteps(); // removed as of w38-7
 };
 
@@ -162,7 +162,7 @@ sleep.onchange = (evt) => {
       //buildtime_weeknum_alt = weeknumArr[today.getMonth()][today.getDate()-1];
     update_week_num();  
     sleep_holder_string = `${hours}:${mins}:${secs}`;
-      myDate.text = sleep_holder_string;
+      last_updated_string.text = sleep_holder_string;
   tap_counter = 0;
      };
 
@@ -170,7 +170,7 @@ sleep.onchange = (evt) => {
 charger.onchange = (charger, evt) => {
       update_week_num();
     // we want to know when battery charger is updated
-      myDate.text = v_today.getDate()+`-${hours}:${mins}`; 
+      last_updated_string.text = v_today.getDate()+`-${hours}:${mins}`; 
      }
 
 function update_week_num() {
