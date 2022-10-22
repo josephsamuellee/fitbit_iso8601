@@ -1,8 +1,7 @@
 # fitbit_iso8601
 new watch place
 
-![iso8601_week_num-screenshot (1)](https://user-images.githubusercontent.com/82346707/194729520-215ec54a-7c5b-4878-90cf-d26630508833.png)
-
+![iso8601_week_num-screenshot (4)](https://user-images.githubusercontent.com/82346707/197314971-6009910f-5e4e-4f87-94f0-f4dcdf1721c8.png)
 
 
 never used the step count, so switching to multiple algorithm evaluation. New 
@@ -23,3 +22,7 @@ just need to add a button. two bugs in this method:
  2. this fitbit randomly turns off. so have to wait until waking up or charging. 
     so probably can remove the charging refresh and just go to a button when it 
     fails to refresh
+    
+21 oct 2022
+Added new feature (probably more power) so that we don't have bugs of missing 
+week number (or at least manual update).
