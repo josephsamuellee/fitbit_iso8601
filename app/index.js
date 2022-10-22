@@ -1,5 +1,5 @@
 import clock from "clock";
-import * as document from "document";
+import * as document from "document"; // also supports touch item
 import { preferences } from "user-settings";
 import * as util from "../common/utils";
 //for steps
@@ -93,12 +93,32 @@ function updateSteps() {
 }
 */ 
 
+/* 
+ * add some code to support for touch_to_update
+ *
+ * purpose: to update weeknum when tapped (because it randomly deletes 
+ * while used)
+ *
+ * concept: when touched, then movement (no timeout...) will update.
+ * While counting, we don't care that much about what the current count
+ * is, so it can overflow into the next page for all we care (not
+ * visible). 
+ */
+let tap_to_update = document.getElementById("tap_to_update");
+tap_to_update.addEventListener("mousemove", (evt) => {
+   update_week_num();
+   myDate.text = `${sleep_holder_string} ${tap_counter}`;
+   tap_counter = tap_counter + 1;
+});
+
 // Update the <text> element every tick with the current time
 //
 let v_today ;
 let hours   ;
 let mins    ;
 let secs    ;
+let sleep_holder_string;
+let tap_counter = 0;
 //let v_today = new Date();
 //let hours = v_today.getHours();
 //let mins = util.zeroPad(v_today.getMinutes());
@@ -141,7 +161,9 @@ clock.ontick = (evt) => {
 sleep.onchange = (evt) => {
       //buildtime_weeknum_alt = weeknumArr[today.getMonth()][today.getDate()-1];
     update_week_num();  
-      myDate.text = `${hours}:${mins}:${secs}`;
+    sleep_holder_string = `${hours}:${mins}:${secs}`;
+      myDate.text = sleep_holder_string;
+  tap_counter = 0;
      };
 
 // w40-1 this will cause an update to the week num (upon charging, or each battery change?)
