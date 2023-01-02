@@ -26,3 +26,8 @@ just need to add a button. two bugs in this method:
 21 oct 2022
 Added new feature (probably more power) so that we don't have bugs of missing 
 week number (or at least manual update).
+
+01 jan 2023
+Added catch so that sundays are mapped to 7 instead of currently 0 (artifact of
+how getdate() returns)
+Updated for 2023 week indices
