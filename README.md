@@ -1,5 +1,7 @@
 # fitbit_iso8601
-new watch place
+This watch app utilizes ISO 8601 week number indices, maintained every year. Please come back for updates next year (due to how the number is calculated manually)
+
+If you appreciate my work, consider supporting me via zelle at the end of this page
 
 ![iso8601_week_num-screenshot (4)](https://user-images.githubusercontent.com/82346707/197314971-6009910f-5e4e-4f87-94f0-f4dcdf1721c8.png)
 
@@ -31,3 +33,7 @@ week number (or at least manual update).
 Added catch so that sundays are mapped to 7 instead of currently 0 (artifact of
 how getdate() returns)
 Updated for 2023 week indices
+
+
+
+![zelle](https://user-images.githubusercontent.com/82346707/217419858-6cc2dd7b-1190-4c4a-afeb-652e4625538c.jpg)
