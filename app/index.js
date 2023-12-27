@@ -2,6 +2,8 @@ import clock from "clock";
 import * as document from "document"; // also supports touch item
 import { preferences } from "user-settings";
 import * as util from "../common/utils";
+import { HeartRateSensor } from "heart-rate";
+import { display } from "display";
 //for steps
 import { me as appbit } from "appbit"; //so that we can get user sleep information
 if (!appbit.permissions.granted("access_sleep")) {
@@ -24,6 +26,8 @@ import { me as device } from "device"; //console
 
 // Update the clock every minute
 clock.granularity = "minutes";
+// for dev only
+//clock.granularity = "seconds";
 
 // Get a handle on the <text> element
 const myTime = document.getElementById("myTime");
@@ -32,6 +36,8 @@ const mySteps = document.getElementById("mySteps");
 const battery_status = document.getElementById("battery_status");
 const myWeekNum = document.getElementById("myWeekNum");
 const myMMDD = document.getElementById("myMMDD");
+const myHRM = document.getElementById("myHRM");
+const myHRMdisplay = document.getElementById("myHRMdisplay");
 
   /* removing old power hungry method
 //function to generate week num
@@ -66,20 +72,20 @@ function current_week_num() {
 //set current week num on buildtime (so we don't have to wait until night)
 //let buildtime_weeknum = current_week_num();
 let test_date = new Date();
-// updated for 2023
+// updated for 2024
 const weeknumArr = [
-[52,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,5],
-[5,5,5,5,5,6,6,6,6,6,6,6,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,9,52,52,52],
-[9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,12,12,12,12,12,12,12,13,13,13,13,13],
-[13,13,14,14,14,14,14,14,14,15,15,15,15,15,15,15,16,16,16,16,16,16,16,17,17,17,17,17,17,17,52],
-[18,18,18,18,18,18,18,19,19,19,19,19,19,19,20,20,20,20,20,20,20,21,21,21,21,21,21,21,22,22,22],
-[22,22,22,22,23,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,25,26,26,26,26,26,52],
-[26,26,27,27,27,27,27,27,27,28,28,28,28,28,28,28,29,29,29,29,29,29,29,30,30,30,30,30,30,30,31],
-[31,31,31,31,31,31,32,32,32,32,32,32,32,33,33,33,33,33,33,33,34,34,34,34,34,34,34,35,35,35,35],
-[35,35,35,36,36,36,36,36,36,36,37,37,37,37,37,37,37,38,38,38,38,38,38,38,39,39,39,39,39,39,52],
-[39,40,40,40,40,40,40,40,41,41,41,41,41,41,41,42,42,42,42,42,42,42,43,43,43,43,43,43,43,44,44],
-[44,44,44,44,44,45,45,45,45,45,45,45,46,46,46,46,46,46,46,47,47,47,47,47,47,47,48,48,48,48,52],
-[48,48,48,49,49,49,49,49,49,49,50,50,50,50,50,50,50,51,51,51,51,51,51,51,52,52,52,52,52,52,52]
+[1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5,5,5],
+[5,5,5,5,6,6,6,6,6,6,6,7,7,7,7,7,7,7,8,8,8,8,8,8,8,9,9,9,9,53,53],
+[9,9,9,10,10,10,10,10,10,10,11,11,11,11,11,11,11,12,12,12,12,12,12,12,13,13,13,13,13,13,13],
+[14,14,14,14,14,14,14,15,15,15,15,15,15,15,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,53],
+[18,18,18,18,18,19,19,19,19,19,19,19,20,20,20,20,20,20,20,21,21,21,21,21,21,21,22,22,22,22,22],
+[22,22,23,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,25,26,26,26,26,26,26,26,53],
+[27,27,27,27,27,27,27,28,28,28,28,28,28,28,29,29,29,29,29,29,29,30,30,30,30,30,30,30,31,31,31],
+[31,31,31,31,32,32,32,32,32,32,32,33,33,33,33,33,33,33,34,34,34,34,34,34,34,35,35,35,35,35,35],
+[35,36,36,36,36,36,36,36,37,37,37,37,37,37,37,38,38,38,38,38,38,38,39,39,39,39,39,39,39,40,53],
+[40,40,40,40,40,40,41,41,41,41,41,41,41,42,42,42,42,42,42,42,43,43,43,43,43,43,43,44,44,44,44],
+[44,44,44,45,45,45,45,45,45,45,46,46,46,46,46,46,46,47,47,47,47,47,47,47,48,48,48,48,48,48,53],
+[48,49,49,49,49,49,49,49,50,50,50,50,50,50,50,51,51,51,51,51,51,51,52,52,52,52,52,52,52,53,53]
 ];
 
 console.log("month="+test_date.getMonth()+
@@ -111,6 +117,7 @@ tap_to_update.addEventListener("mousemove", (evt) => {
    update_week_num();
    last_updated_string.text = `${sleep_holder_string} ${tap_counter}`;
    tap_counter = tap_counter + 1;
+
 });
 
 // Update the <text> element every tick with the current time
@@ -125,6 +132,7 @@ let tap_counter = 0;
 //let hours = v_today.getHours();
 //let mins = util.zeroPad(v_today.getMinutes());
 //let secs = util.zeroPad(v_today.getSeconds());
+let myHRMdata;
 
 clock.ontick = (evt) => {
   v_today = evt.date;
@@ -154,7 +162,20 @@ clock.ontick = (evt) => {
     /* 2022-w40-1
     last_updated_string.text = "W"+buildtime_weeknum+" old";
   */
-  battery_status.text = battery.chargeLevel + "% batt";
+    if (HeartRateSensor) {
+      const hrm = new HeartRateSensor();
+      hrm.addEventListener("reading", () => {
+        myHRMdata =`${hrm.heartRate}`;
+        myHRM.text = myHRMdata;
+      });
+      display.addEventListener("change", () => {
+        // Automatically stop the sensor when the screen is off to conserve battery
+        display.on ? hrm.start() : hrm.stop();
+      });
+      hrm.start();
+    }
+  battery_status.text = battery.chargeLevel + "%";
+  myHRMdisplay.text = "bpm";
   //battery_status.text = "hello"
   //updateSteps(); // removed as of w38-7
 };

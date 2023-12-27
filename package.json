@@ -1,27 +1,34 @@
 {
+  "name": "fitbit_iso8601",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
   "devDependencies": {
-    "@fitbit/sdk": "~6.1.0"
+    "@fitbit/sdk": "~6.1.0",
+    "@fitbit/sdk-cli": "^1.7.3"
   },
   "fitbit": {
-    "appUUID": "6187eeb5-18d9-4fc1-b577-b03e45d5c93e",
+    "appUUID": "0ff5c8f6-50e2-4b2f-931a-fb604da9f3cd",
     "appType": "clockface",
-    "appDisplayName": "iso8601_week_num",
+    "appDisplayName": "fitbit_iso8601",
     "iconFile": "resources/icon.png",
-    "wipeColor": "",
+    "wipeColor": "#ffffff",
     "requestedPermissions": [
-      "access_activity",
-      "access_heart_rate",
-      "access_user_profile",
-      "run_background"
+        "access_activity",
+        "access_heart_rate",
+        "access_sleep",
+        "access_user_profile",
+        "run_background"
     ],
     "buildTargets": [
-      "atlas"
+      "atlas",
+      "vulcan"
     ],
-    "i18n": {
-      "en-US": {
-        "name": "iso8601_week_num"
-      }
-    },
+    "i18n": {},
     "defaultLanguage": "en-US"
+  },
+  "scripts": {
+    "build": "fitbit-build",
+    "debug": "fitbit"
   }
 }

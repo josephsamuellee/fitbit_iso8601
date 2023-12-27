@@ -26,7 +26,7 @@
 #battery_status {
   font-size: 60;
   font-family: System-Bold;
-  text-length: 32;
+  text-length: 4;
   text-anchor: start;
   fill: green;
 }
@@ -39,6 +39,21 @@
 }
 #myMMDD {
   font-size: 60;
+  font-family: System-Light;
+  text-length: 32;
+  text-anchor: start;
+  fill: white;
+}
+
+#myHRM {
+  font-size: 60;
+  font-family: System-Bold;
+  text-length: 3;
+  text-anchor: start;
+  fill: white;
+}
+#myHRMdisplay {
+  font-size: 30;
   font-family: System-Light;
   text-length: 32;
   text-anchor: start;

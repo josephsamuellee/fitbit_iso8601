@@ -1,6 +1,8 @@
 <svg class="background">
   <text   x="10%" y="90%" id="myTime" />
   <text   x="10%" y="90%-60" id="battery_status" />
+  <text   x="60%" y="90%-60" id="myHRM" />
+  <text   x="80%" y="90%-80" id="myHRMdisplay" />
   
   <text   x="10%" y="10%+30" id="last_updated_string" />
   <text   x="10%" y="10%+80" id="myWeekNum" />
