@@ -2,7 +2,6 @@ import clock from "clock";
 import * as document from "document"; // also supports touch item
 import { preferences } from "user-settings";
 import * as util from "../common/utils";
-import { HeartRateSensor } from "heart-rate";
 import { display } from "display";
 //for steps
 import { me as appbit } from "appbit"; //so that we can get user sleep information
@@ -37,7 +36,6 @@ const battery_status = document.getElementById("battery_status");
 const myWeekNum = document.getElementById("myWeekNum");
 const myMMDD = document.getElementById("myMMDD");
 const myHRM = document.getElementById("myHRM");
-const myHRMdisplay = document.getElementById("myHRMdisplay");
 
   /* removing old power hungry method
 //function to generate week num
@@ -87,6 +85,7 @@ const weeknumArr = [
 [44,44,44,45,45,45,45,45,45,45,46,46,46,46,46,46,46,47,47,47,47,47,47,47,48,48,48,48,48,48,53],
 [48,49,49,49,49,49,49,49,50,50,50,50,50,50,50,51,51,51,51,51,51,51,52,52,52,52,52,52,52,53,53]
 ];
+const monthAsString = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
 console.log("month="+test_date.getMonth()+
             "day="+(test_date.getDate()-1)+ 
@@ -158,24 +157,13 @@ clock.ontick = (evt) => {
   }
   */
   myTime.text = `${hours}:${mins}`;
-  myMMDD.text = util.zeroPad(v_today.getMonth()+1)+"/"+util.zeroPad(v_today.getDate());
+  // don't want to use ambiguous numbers anymore
+  //myMMDD.text = util.zeroPad(v_today.getMonth()+1)+"/"+util.zeroPad(v_today.getDate());
+  myMMDD.text = util.zeroPad(v_today.getDate()) + monthAsString[v_today.getMonth()];
     /* 2022-w40-1
     last_updated_string.text = "W"+buildtime_weeknum+" old";
   */
-    if (HeartRateSensor) {
-      const hrm = new HeartRateSensor();
-      hrm.addEventListener("reading", () => {
-        myHRMdata =`${hrm.heartRate}`;
-        myHRM.text = myHRMdata;
-      });
-      display.addEventListener("change", () => {
-        // Automatically stop the sensor when the screen is off to conserve battery
-        display.on ? hrm.start() : hrm.stop();
-      });
-      hrm.start();
-    }
   battery_status.text = battery.chargeLevel + "%";
-  myHRMdisplay.text = "bpm";
   //battery_status.text = "hello"
   //updateSteps(); // removed as of w38-7
 };
@@ -206,5 +194,5 @@ function update_week_num() {
     buildtime_weeknum_alt = weeknumArr[v_today.getMonth()][v_today.getDate()-1];
 
     //was bugged with sunday = 0, trying to fix, not fixable with modulo
-    myWeekNum.text = "2023-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+((v_today.getDay()==0)?7:v_today.getDay());
+    myWeekNum.text = "2024-W"+util.zeroPad(buildtime_weeknum_alt)+"-"+((v_today.getDay()==0)?7:v_today.getDay());
 }

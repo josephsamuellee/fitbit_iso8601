@@ -6,7 +6,7 @@
   
   <text   x="10%" y="10%+30" id="last_updated_string" />
   <text   x="10%" y="10%+80" id="myWeekNum" />
-  <text   x="40%" y="10%+130" id="myMMDD" />
+  <text   x="30%" y="10%+140" id="myMMDD" />
   <!--
     y@10% with 60px text height... too high, gets cut off
 
