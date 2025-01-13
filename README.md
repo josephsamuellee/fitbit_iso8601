@@ -1,7 +1,7 @@
 # fitbit_iso8601
 This watch app utilizes ISO 8601 week number indices, maintained every year. Please come back for updates next year (due to how the number is calculated manually)
 
-If you appreciate my work, consider supporting me via zelle at the end of this page
+If you appreciate my work, consider supporting me via ko-fi at the end of this page
 
 ![iso8601_week_num-screenshot (4)](https://user-images.githubusercontent.com/82346707/197314971-6009910f-5e4e-4f87-94f0-f4dcdf1721c8.png)
 
@@ -34,6 +34,13 @@ Added catch so that sundays are mapped to 7 instead of currently 0 (artifact of
 how getdate() returns)
 Updated for 2023 week indices
 
+12 jan 2025
+reminders to self:
+1. this is run through npx
+2. to get to fitbit cli, use npx @fitbit/sdk-cli init my-fitbit-app
+3. then you build and install
+note: you may need to run "connect device" to verify that versa 3 is on the same 
+network. 
 
 
 ko-fi.com/joseph12163
