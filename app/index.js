@@ -1,6 +1,5 @@
 import clock from "clock";
 import * as document from "document"; // also supports touch item
-import { preferences } from "user-settings";
 import * as util from "../common/utils";
 import { display } from "display";
 //for steps
@@ -203,17 +202,8 @@ let myHRMdata;
 
 clock.ontick = (evt) => {
   v_today = evt.date;
-  hours = v_today.getHours();
-  
-  
-  
-  if (preferences.clockDisplay === "12h") {
-    // 12h format
-    hours = hours % 12 || 12;
-  } else {
-    // 24h format
-    hours = util.zeroPad(hours);
-  }
+  // always 24h (ignore device 12h preference)
+  hours = util.zeroPad(v_today.getHours());
   mins = util.zeroPad(v_today.getMinutes());
   //myTime.text = `${hours}:${mins}`;
   
@@ -254,7 +244,7 @@ charger.onchange = (charger, evt) => {
 
 function update_week_num() {
     v_today = new Date();
-    hours = v_today.getHours();
+    hours = util.zeroPad(v_today.getHours());
     mins = util.zeroPad(v_today.getMinutes());
     secs = util.zeroPad(v_today.getSeconds());
 

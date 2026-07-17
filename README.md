@@ -1,5 +1,6 @@
 # fitbit_iso8601
-This watch app utilizes ISO 8601 week number indices, maintained every year. Please come back for updates next year (due to how the number is calculated manually)
+This watch app shows ISO 8601 week numbers via precomputed year tables (currently
+2026-2030 in `app/index.js`). Clock time is always 24-hour format.
 
 If you appreciate my work, consider supporting me via ko-fi at the end of this page
 
@@ -45,6 +46,7 @@ network.
 16 jul 2026
 Week tables now cover 2026-2030 in app/index.js (weeknumByYear). No annual
 table edit needed until 2031. Build target is atlas.
+Clock display forced to 24h (no longer follows device 12h preference).
 
 
 
