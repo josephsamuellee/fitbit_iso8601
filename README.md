@@ -42,6 +42,11 @@ reminders to self:
 note: you may need to run "connect device" to verify that versa 3 is on the same 
 network. 
 
+16 jul 2026
+Week tables now cover 2026-2030 in app/index.js (weeknumByYear). No annual
+table edit needed until 2031. Build target is atlas.
+
+
 
 ko-fi.com/joseph12163
 
